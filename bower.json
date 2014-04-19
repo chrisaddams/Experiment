@@ -1,0 +1,17 @@
+{
+  "name": "Test_Project",
+  "version": "0.0.0",
+  "description": "\"Testing Project\"",
+  "moduleType": [
+    "node"
+  ],
+  "authors": [
+    "Chris_Gornall <chris.gornall@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "jquery": "~2.1.0",
+    "toastr": "~2.0.1"
+  }
+}
