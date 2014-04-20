@@ -10,6 +10,9 @@ function compile(str, path){
 }
 
 app.set('views', __dirname + '/server/views');
+
+
+
 app.set('view engine', 'jade');
 app.use(require("express-chrome-logger"));
 //app.use(express.bodyParser());
