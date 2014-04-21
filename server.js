@@ -15,7 +15,7 @@ app.use(stylus.middleware({
 	src: __dirname + '/public',
 	compile: compile
 }));
-app.use(express.static(__dirname+ '/public'));
+app.use(express.static(__dirname + '/public'));
 
 if(env === 'development'){
 	mongoose.connect('mongodb://localhost/Test_Project');
