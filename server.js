@@ -19,8 +19,6 @@ app.use(express.static(__dirname + '/public'));
 
 if(env === 'development'){
 	mongoose.connect('mongodb://localhost/Test_Project');
-} else {
-	mongoose.connect('mongodb://chris_gornall:gvc591d@ds035368.mongolab.com:35368/test_project');
 }
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error...'));
