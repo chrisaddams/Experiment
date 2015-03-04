@@ -1,38 +1,36 @@
-var express = require('express');
-stylus = require('stylus');
-mongoose = require('mongoose');
+'use strict';
+/**
+ * Module dependencies.
+ */
+var init = require('./config/init')(),
+	config = require('./config/config'),
+	mongoose = require('mongoose'),
+	chalk = require('chalk');
 
-var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+/**
+ * Main application entry file.
+ * Please note that the order of loading is important.
+ */
 
-var app = express();
-function compile(str, path){
-	return stylus(str).set('filename', path);
-};
-app.set('views', __dirname + '/server/views');
-app.set('view engine', 'jade');
-app.use(require("express-chrome-logger"));
-app.use(stylus.middleware({
-	src: __dirname + '/public',
-	compile: compile
-}));
-app.use(express.static(__dirname + '/public'));
-
-if(env === 'development'){
-	mongoose.connect('mongodb://localhost/Test_Project');
-}
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error...'));
-db.once('open', function callback(){
-	console.log('test project db opened');
+// Bootstrap db connection
+var db = mongoose.connect(config.db, function(err) {
+	if (err) {
+		console.error(chalk.red('Could not connect to MongoDB!'));
+		console.log(chalk.red(err));
+	}
 });
 
-app.get('/partials/:partialPath', function(req, res){
-	res.render('partials/' + req.params.partialPath);
-});
+// Init the express application
+var app = require('./config/express')(db);
 
-app.get('/', function(req, res){
-	res.render('index');
-});
-var port = process.env.PORT || 3030;
-app.listen(port);
-console.log('Listening on port ' + port + '...');
+// Bootstrap passport config
+require('./config/passport')();
+
+// Start the app by listening on <port>
+app.listen(config.port);
+
+// Expose app
+exports = module.exports = app;
+
+// Logging initialization
+console.log('MEAN.JS application started on port ' + config.port);
